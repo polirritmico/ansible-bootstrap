@@ -84,9 +84,9 @@ clone_repository() {
 
 execute_ansible_playbook() {
     echo "execute ansible playbook"
-    home_dir=$( eval echo ~"$USER" )
+    # home_dir=$( eval echo ~"$USER" )
+    # echo "$home_dir"
     pushd "${REPO_DIR}"
-    echo "$home_dir"
     ansible-playbook main.yml
     popd
 }
@@ -95,7 +95,7 @@ execute_ansible_playbook() {
 # Script execution
 #-------------------------------------------------------------------------------
 
-# install_packages
+install_packages
 
 clone_repository
 
