@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+# e - script stops on error (return !=0)
+# u - error if undefined variable
+# o pipefail - script fails if one of piped command fails
+# x - output each line (debug)
+set -euo pipefail
+
+REPO_ACCOUNT="polirritmico"
+REPO_NAME="ansible-bootstrap"
+REPO_SERVER="https://github.com/"
+REPO_URL="${REPO_SERVER}${REPO_ACCOUNT}/${REPO_NAME}.git"
+REPO_BRANCH="main"
+REPO_DIR="/tmp/ansible"
+
+PACKAGES_TO_INSTALL=( "git" "ansible" )
+
+ROOTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HOSTS="$ROOTDIR/hosts"
+PLAYBOOK="$ROOTDIR/dotfiles.yml"
+
+#-------------------------------------------------------------------------------
+# Functions definitions
+#-------------------------------------------------------------------------------
+
+install_packages() {
+    package_manager_install() {
+        # TODO: Check the packages and remove the installed ones from the list
+        local command=$1
+        local packages="${PACKAGES_TO_INSTALL[*]}"
+        eval "$command $packages"
+    }
+
+    echo "Installing needed packages..."
+    echo "Current settings:"
+    echo "  - PACKAGES_TO_INSTALL: ${PACKAGES_TO_INSTALL[*]}"
+    echo "  - ROOTDIR: ${ROOTDIR}"
+    echo "  - HOSTS: ${HOSTS}"
+    echo "  - PLAYBOOK: ${PLAYBOOK}"
+
+    # Detect distro
+    if [ -f /etc/os-release ]; then
+        source /etc/os-release
+        DISTRO=$ID
+    elif [ -f /etc/lsb-release ]; then
+        source /etc/lsb-release
+        DISTRO=$DISTRIB_ID
+    fi
+
+    if [ "$DISTRO" == "gentoo" ]; then
+        PACKAGES_TO_INSTALL=( "dev-vcs/git" "app-admin/ansible" )
+        package_manager_install "emerge -av"
+    elif [ "$DISTRO"  == "fedora" ]; then
+        package_manager_install "sudo dnf install -y"
+    elif [ "$DISTRO" == "ubuntu" ]; then
+        package_manager_install "sudo apt install -y"
+    elif [ "$DISTRO" == "centos" ]; then
+        package_manager_install "sudo yum install -y"
+    else
+        echo "Error: Unsupported distro."
+        echo "       Install manually and modify the script to not run install_packages"
+        exit 1
+    fi
+
+    echo "Packages installed"
+}
+
+#----------------------------------------
+
+clone_repository() {
+    echo -e "Clonning the ansible repo '${REPO_URL}' into '${REPO_DIR}'..."
+    echo -en "Enter PAT passphrase: "
+    read -sr passphrase
+
+    echo # echo -n "token" | openssl enc -aes-256-cbc -a -salt -pbkdf2 -pass pass:key
+    token=$( echo "U2FsdGVkX1/HSweGkZFtpL/ge3sQCJESB4JzklfJB1M4wNFNVNZW0W02jWuZkNhGN+L90lrQ/IorkbrciDcxyJI0vfGksvw4K7MeNTDIXluI6BQJzHZtsWZkJ/xDhy3RcdXY3ZzOubj7U1RIv3ZRYw==" | \
+        openssl enc -aes-256-cbc -d -a -pbkdf2 -pass pass:"${passphrase}" )
+
+    git clone -b "$REPO_BRANCH" "https://${token}@github.com/${REPO_ACCOUNT}/${REPO_NAME}.git" "${REPO_DIR}"
+    echo -e "Cloned repository into '${REPO_DIR}'"
+}
+
+#----------------------------------------
+
+execute_ansible_playbook() {
+    echo "execute ansible playbook"
+    home_dir=$( eval echo ~"$USER" )
+    pushd "${REPO_DIR}"
+    echo "$home_dir"
+    ansible-playbook main.yml
+    popd
+}
+
+#-------------------------------------------------------------------------------
+# Script execution
+#-------------------------------------------------------------------------------
+
+# install_packages
+
+clone_repository
+
+execute_ansible_playbook
+
+echo "Done"
