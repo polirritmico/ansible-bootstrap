@@ -6,6 +6,8 @@
 # x - output each line (debug)
 set -euo pipefail
 
+VERSION="0.1"
+
 REPO_ACCOUNT="polirritmico"
 REPO_NAME="ansible"
 REPO_SERVER="https://github.com/"
@@ -69,7 +71,7 @@ install_packages() {
 
 clone_repository() {
     echo -e "Clonning the ansible repo '${REPO_URL}' into '${REPO_DIR}'..."
-    if [[ -d ${REPO_URL} ]]; then
+    if [[ -d $REPO_URL ]]; then
         echo -e "Found '${REPO_DIR}' directory. Removing..."
         rm -rfI ${REPO_DIR}
     fi
@@ -98,6 +100,8 @@ execute_ansible_playbook() {
 #-------------------------------------------------------------------------------
 # Script execution
 #-------------------------------------------------------------------------------
+
+echo -e "Executing bootstrap script version ${VERSION}:"
 
 install_packages
 
