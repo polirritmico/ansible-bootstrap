@@ -6,7 +6,7 @@
 # x - output each line (debug)
 set -euo pipefail
 
-VERSION="0.1"
+VERSION="0.2"
 
 REPO_ACCOUNT="polirritmico"
 REPO_NAME="ansible"
