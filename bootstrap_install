@@ -93,7 +93,7 @@ execute_ansible_playbook() {
     # home_dir=$( eval echo ~"$USER" )
     # echo "$home_dir"
     pushd "${REPO_DIR}"
-    ansible-playbook -K main.yml
+    ansible-playbook -KJ main.yml
     popd
 }
 
