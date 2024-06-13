@@ -71,7 +71,7 @@ install_packages() {
 
 clone_repository() {
     echo -e "Clonning the ansible repo '${REPO_URL}' into '${REPO_DIR}'..."
-    if [[ -d $REPO_URL ]]; then
+    if [[ -d $REPO_DIR ]]; then
         echo -e "Found '${REPO_DIR}' directory. Removing..."
         rm -rfI ${REPO_DIR}
     fi
