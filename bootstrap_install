@@ -7,7 +7,7 @@
 set -euo pipefail
 
 REPO_ACCOUNT="polirritmico"
-REPO_NAME="ansible-bootstrap"
+REPO_NAME="ansible"
 REPO_SERVER="https://github.com/"
 REPO_URL="${REPO_SERVER}${REPO_ACCOUNT}/${REPO_NAME}.git"
 REPO_BRANCH="main"
@@ -69,6 +69,10 @@ install_packages() {
 
 clone_repository() {
     echo -e "Clonning the ansible repo '${REPO_URL}' into '${REPO_DIR}'..."
+    if [[ -d ${REPO_URL} ]]; then
+        echo -e "Found '${REPO_DIR}' directory. Removing..."
+        rm -rfI ${REPO_DIR}
+    fi
     echo -en "Enter PAT passphrase: "
     read -sr passphrase
 
