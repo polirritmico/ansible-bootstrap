@@ -109,4 +109,4 @@ clone_repository
 
 execute_ansible_playbook
 
-echo "Done"
+echo "Done. Use: 'source ~/.bashrc' to reload the aliases"
