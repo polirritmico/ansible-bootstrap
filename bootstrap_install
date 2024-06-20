@@ -17,10 +17,6 @@ REPO_DIR="/tmp/ansible"
 
 PACKAGES_TO_INSTALL=( "git" "ansible" )
 
-ROOTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HOSTS="$ROOTDIR/hosts"
-PLAYBOOK="$ROOTDIR/dotfiles.yml"
-
 #-------------------------------------------------------------------------------
 # Functions definitions
 #-------------------------------------------------------------------------------
@@ -36,9 +32,6 @@ install_packages() {
     echo "Installing needed packages..."
     echo "Current settings:"
     echo "  - PACKAGES_TO_INSTALL: ${PACKAGES_TO_INSTALL[*]}"
-    echo "  - ROOTDIR: ${ROOTDIR}"
-    echo "  - HOSTS: ${HOSTS}"
-    echo "  - PLAYBOOK: ${PLAYBOOK}"
 
     # Detect distro
     if [ -f /etc/os-release ]; then
@@ -102,9 +95,9 @@ execute_ansible_playbook() {
 # Script execution
 #-------------------------------------------------------------------------------
 
-echo -e "--------------------------------------------------------"
-echo -e "-- Executing bootstrap script version ${VERSION}:"
-echo -e "--------------------------------------------------------\n"
+echo -e "========================================n"
+echo -e "Executing bootstrap script version ${VERSION}:"
+echo -e "========================================n"
 
 install_packages
 
