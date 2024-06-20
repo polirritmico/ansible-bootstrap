@@ -53,6 +53,7 @@ install_packages() {
         PACKAGES_TO_INSTALL=( "dev-vcs/git" "app-admin/ansible" )
         package_manager_install "emerge -av"
     elif [ "$DISTRO"  == "fedora" ]; then
+        PACKAGES_TO_INSTALL=( "git" "ansible" "openssl" )
         package_manager_install "sudo dnf install -y"
     elif [ "$DISTRO" == "ubuntu" ]; then
         package_manager_install "sudo apt install -y"
