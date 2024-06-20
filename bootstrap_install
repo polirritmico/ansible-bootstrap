@@ -29,9 +29,10 @@ install_packages() {
         eval "$command $packages"
     }
 
-    echo "Installing needed packages..."
-    echo "Current settings:"
-    echo "  - PACKAGES_TO_INSTALL: ${PACKAGES_TO_INSTALL[*]}"
+    echo -e "Installing needed packages..."
+    echo -e "Current settings:"
+    echo -e "  - PACKAGES_TO_INSTALL: ${PACKAGES_TO_INSTALL[*]}"
+    echo -e "\n\n"
 
     # Detect distro
     if [ -f /etc/os-release ]; then
@@ -83,11 +84,9 @@ clone_repository() {
 #----------------------------------------
 
 execute_ansible_playbook() {
-    echo "execute ansible playbook"
-    # home_dir=$( eval echo ~"$USER" )
-    # echo "$home_dir"
+    echo "Executing the Ansible playbook"
     pushd "${REPO_DIR}"
-    ansible-playbook -KJ main.yml
+    ansible-playbook --ask-vault-pass --ask-become-pass main.yml
     popd
 }
 
