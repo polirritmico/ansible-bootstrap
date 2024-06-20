@@ -31,8 +31,7 @@ install_packages() {
 
     echo -e "Installing needed packages..."
     echo -e "Current settings:"
-    echo -e "  - PACKAGES_TO_INSTALL: ${PACKAGES_TO_INSTALL[*]}"
-    echo -e "\n\n"
+    echo -e "  - PACKAGES_TO_INSTALL: ${PACKAGES_TO_INSTALL[*]}\n"
 
     # Detect distro
     if [ -f /etc/os-release ]; then
