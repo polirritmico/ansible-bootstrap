@@ -6,7 +6,7 @@
 # x - output each line (debug)
 set -euo pipefail
 
-VERSION="0.2"
+VERSION="0.3"
 
 REPO_ACCOUNT="polirritmico"
 REPO_NAME="ansible"
@@ -102,7 +102,9 @@ execute_ansible_playbook() {
 # Script execution
 #-------------------------------------------------------------------------------
 
-echo -e "Executing bootstrap script version ${VERSION}:"
+echo -e "--------------------------------------------------------"
+echo -e "-- Executing bootstrap script version ${VERSION}:"
+echo -e "--------------------------------------------------------\n"
 
 install_packages
 
