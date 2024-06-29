@@ -73,7 +73,7 @@ clone_repository() {
     read -sr passphrase
 
     echo # echo -n "token" | openssl enc -aes-256-cbc -a -salt -pbkdf2 -pass pass:key
-    token=$( echo "U2FsdGVkX1/HSweGkZFtpL/ge3sQCJESB4JzklfJB1M4wNFNVNZW0W02jWuZkNhGN+L90lrQ/IorkbrciDcxyJI0vfGksvw4K7MeNTDIXluI6BQJzHZtsWZkJ/xDhy3RcdXY3ZzOubj7U1RIv3ZRYw==" | \
+    token=$( echo "U2FsdGVkX18t6A27A7u4sw0H3EpoKqkHWosxk+tuw9mm5sLnMNMqNmzSBTYfJZ/q4MgbI6o9dsutKL8Xw/Ic9CWLfUy3H5PAkFsXVeNLnil1lTgtPcdlt7+Q6J5L3L/DXXLk4S62q6JO1+4Cl0oGjQ==" | \
         openssl enc -aes-256-cbc -d -a -pbkdf2 -pass pass:"${passphrase}" )
 
     git clone -b "$REPO_BRANCH" "https://${token}@github.com/${REPO_ACCOUNT}/${REPO_NAME}.git" "${REPO_DIR}"
