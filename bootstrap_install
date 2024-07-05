@@ -76,7 +76,7 @@ clone_repository() {
     token=$( echo "U2FsdGVkX18t6A27A7u4sw0H3EpoKqkHWosxk+tuw9mm5sLnMNMqNmzSBTYfJZ/q4MgbI6o9dsutKL8Xw/Ic9CWLfUy3H5PAkFsXVeNLnil1lTgtPcdlt7+Q6J5L3L/DXXLk4S62q6JO1+4Cl0oGjQ==" | \
         openssl enc -aes-256-cbc -d -a -pbkdf2 -pass pass:"${passphrase}" )
 
-    git clone -b "$REPO_BRANCH" "https://${token}@github.com/${REPO_ACCOUNT}/${REPO_NAME}.git" "${REPO_DIR}"
+    git clone --recurse-submodules -j2 -b "$REPO_BRANCH" "https://${token}@github.com/${REPO_ACCOUNT}/${REPO_NAME}.git" "${REPO_DIR}"
     echo -e "Cloned repository into '${REPO_DIR}'"
 }
 
