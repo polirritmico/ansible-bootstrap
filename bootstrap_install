@@ -15,7 +15,7 @@ REPO_URL="${REPO_SERVER}${REPO_ACCOUNT}/${REPO_NAME}.git"
 REPO_BRANCH="main"
 REPO_DIR="/tmp/ansible"
 
-PACKAGES_TO_INSTALL=( "git" "ansible" )
+PACKAGES_TO_INSTALL=("git" "ansible")
 
 #-------------------------------------------------------------------------------
 # Functions definitions
@@ -43,13 +43,16 @@ install_packages() {
     fi
 
     if [ "$DISTRO" == "gentoo" ]; then
-        PACKAGES_TO_INSTALL=( "dev-vcs/git" "app-admin/ansible" )
+        PACKAGES_TO_INSTALL=("dev-vcs/git" "app-admin/ansible")
         package_manager_install "emerge -av"
-    elif [ "$DISTRO"  == "fedora" ]; then
-        PACKAGES_TO_INSTALL=( "git" "ansible" "openssl" )
+    elif [ "$DISTRO" == "fedora" ]; then
+        PACKAGES_TO_INSTALL=("git" "ansible" "openssl")
         package_manager_install "sudo dnf install -y"
     elif [ "$DISTRO" == "ubuntu" ]; then
         package_manager_install "sudo apt install -y"
+    elif [ "$DISTRO" == "arch" ]; then
+        PACKAGES_TO_INSTALL=("git" "ansible" "openssl")
+        package_manager_install "sudo pacman -S --noconfirm"
     elif [ "$DISTRO" == "centos" ]; then
         package_manager_install "sudo yum install -y"
     else
@@ -73,8 +76,8 @@ clone_repository() {
     read -sr passphrase
 
     echo # echo -n "token" | openssl enc -aes-256-cbc -a -salt -pbkdf2 -pass pass:key
-    token=$( echo "U2FsdGVkX18t6A27A7u4sw0H3EpoKqkHWosxk+tuw9mm5sLnMNMqNmzSBTYfJZ/q4MgbI6o9dsutKL8Xw/Ic9CWLfUy3H5PAkFsXVeNLnil1lTgtPcdlt7+Q6J5L3L/DXXLk4S62q6JO1+4Cl0oGjQ==" | \
-        openssl enc -aes-256-cbc -d -a -pbkdf2 -pass pass:"${passphrase}" )
+    token=$(echo "U2FsdGVkX18t6A27A7u4sw0H3EpoKqkHWosxk+tuw9mm5sLnMNMqNmzSBTYfJZ/q4MgbI6o9dsutKL8Xw/Ic9CWLfUy3H5PAkFsXVeNLnil1lTgtPcdlt7+Q6J5L3L/DXXLk4S62q6JO1+4Cl0oGjQ==" |
+        openssl enc -aes-256-cbc -d -a -pbkdf2 -pass pass:"${passphrase}")
 
     git clone -b "$REPO_BRANCH" "https://${token}@github.com/${REPO_ACCOUNT}/${REPO_NAME}.git" "${REPO_DIR}"
     echo -e "Cloned repository into '${REPO_DIR}'"

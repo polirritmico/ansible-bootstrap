@@ -14,7 +14,7 @@ playbook.
 
 ## Supported systems
 
-> - [ ] Arch Linux
+> - [x] Arch Linux
 > - [x] Fedora
 > - [ ] Gentoo (not tested)
 > - [x] Ubuntu
